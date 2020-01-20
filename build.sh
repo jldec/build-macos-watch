@@ -1,6 +1,5 @@
-# NOTE:
-# this script assumes prefix ${PREFIX} (modify script to install somewhere else)
-# this script cannot be run in one step - first do the curl and jq steps below
+# my attempt to build the watch utility manually on macOS using scripts copied from homebrew formulae
+# NOTE: this cannot be run in one step - start with just the curl and jq steps below
 
 export PREFIX=~/local
 echo "PREFIX = $PREFIX"
@@ -26,7 +25,7 @@ jq '.bottle.stable.files.catalina.url' < pkg-config.json | xargs curl -OL
 jq '.bottle.stable.files.catalina.url' < ncurses.json    | xargs curl -OL
 jq '.bottle.stable.files.catalina.url' < watch.json      | xargs curl -OL
 
-# manually untar the downloaded bottle archives
+# now manually un-tar the downloaded bottle archives
 # open the xxx.rb file in each .brew directory to check versions of the curl/clone steps below
 
 curl -LO https://ftpmirror.gnu.org/autoconf/autoconf-2.69.tar.xz
@@ -121,6 +120,7 @@ cd      ncurses-6.1
   --enable-widec \
   --with-shared \
   --with-gpm=no
+make install
 
 cd $BUILD_DIR
 cd procps
