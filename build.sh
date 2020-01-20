@@ -3,9 +3,12 @@
 # this script cannot be run in one step - first do the curl and jq steps below
 
 export PREFIX=~/local
-export BUILD_DIR=~/homebrew
+echo "PREFIX = $PREFIX"
 
+export BUILD_DIR=~/homebrew
+echo "BUILD_DIR = $BUILD_DIR"
 mkdirp $BUILD_DIR
+cd $BUILD_DIR
 
 curl https://formulae.brew.sh/api/formula/autoconf.json   | jq > autoconf.json
 curl https://formulae.brew.sh/api/formula/automake.json   | jq > automake.json
@@ -23,7 +26,8 @@ jq '.bottle.stable.files.catalina.url' < pkg-config.json | xargs curl -OL
 jq '.bottle.stable.files.catalina.url' < ncurses.json    | xargs curl -OL
 jq '.bottle.stable.files.catalina.url' < watch.json      | xargs curl -OL
 
-# untar the downloaded bottle archives and the open the file in each .brew directory to check versions
+# manually untar the downloaded bottle archives
+# open the xxx.rb file in each .brew directory to check versions of the curl/clone steps below
 
 curl -LO https://ftpmirror.gnu.org/autoconf/autoconf-2.69.tar.xz
 curl -LO https://ftpmirror.gnu.org/automake/automake-1.16.1.tar.xz
@@ -34,7 +38,7 @@ curl -LO https://ftpmirror.gnu.org/ncurses/ncurses-6.1.tar.gz
 git clone https://gitlab.com/procps-ng/procps.git && git checkout v3.3.16
 
 # versions below must match the versions curled/cloned above.
-# build steps are copied from the install function in each brew file
+# build steps are copied from the install function in each .brew file
 
 cd $BUILD_DIR
 rm -fr  autoconf-2.69
