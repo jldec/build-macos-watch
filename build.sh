@@ -2,8 +2,8 @@
 # this script assumes prefix ${PREFIX} (modify script to install somewhere else)
 # this script cannot be run in one step - first do the curl and jq steps below
 
-PREFIX=~/local
-BUILD_DIR=~/homebrew
+export PREFIX=~/local
+export BUILD_DIR=~/homebrew
 
 mkdirp $BUILD_DIR
 
@@ -34,6 +34,7 @@ curl -LO https://ftpmirror.gnu.org/ncurses/ncurses-6.1.tar.gz
 git clone https://gitlab.com/procps-ng/procps.git && git checkout v3.3.16
 
 # versions below must match the versions curled/cloned above.
+# build steps are copied from the install function in each brew file
 
 cd $BUILD_DIR
 rm -fr  autoconf-2.69
@@ -102,6 +103,7 @@ make
 make check
 make install
 
+# did not implement make_libncurses_symlinks from ncurses/ncurses/6.1/.brew/ncurses.rb
 cd $BUILD_DIR
 rm -fr  ncurses-6.1
 tar xzf ncurses-6.1.tar.gz
