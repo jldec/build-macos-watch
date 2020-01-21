@@ -1,5 +1,8 @@
-# my attempt to build the watch utility manually on macOS using scripts copied from homebrew formulae
 # NOTE: this cannot be run in one step - start with just the curl and jq steps below
+# improvements todo:
+# - just extract **/.brew/*.rb for each bottle
+# - pull mirror or git url from bottle
+# - use non-versioned directories for extracted source (see .gitignore)
 
 export PREFIX=~/local
 echo "PREFIX = $PREFIX"
@@ -31,7 +34,7 @@ jq '.bottle.stable.files.catalina.url' < watch.json      | xargs curl -OL
 curl -LO https://ftpmirror.gnu.org/autoconf/autoconf-2.69.tar.xz
 curl -LO https://ftpmirror.gnu.org/automake/automake-1.16.1.tar.xz
 curl -LO https://ftpmirror.gnu.org/gettext/gettext-0.20.1.tar.xz
-curl -LO https://ftpmirror.gnu.org/libtool/libtool-2.4.6.tar.gz
+curl -LO https://ftpmirror.gnu.org/libtool/libtool-2.4.6.tar.xz
 curl -LO https://dl.bintray.com/homebrew/mirror/pkg-config-0.29.2.tar.gz
 curl -LO https://ftpmirror.gnu.org/ncurses/ncurses-6.1.tar.gz
 git clone https://gitlab.com/procps-ng/procps.git && git checkout v3.3.16
@@ -50,7 +53,7 @@ sed -i '' 's/libtoolize/glibtoolize/g' man/autoreconf.1
 make install
 
 cd $BUILD_DIR
-rm -fr  automake-1.16
+rm -fr  automake-1.16.1
 tar xzf automake-1.16.1.tar.xz
 cd      automake-1.16.1
 curl -L https://git.savannah.gnu.org/cgit/automake.git/patch/?id=a348d830659fffd2cfc42994524783b07e69b4b5 >sedpatch.patch
@@ -83,10 +86,11 @@ make install
 
 cd $BUILD_DIR
 rm -fr  libtool-2.4.6
-tar xzf libtool-2.4.6.tar.gz
+tar xzf libtool-2.4.6.tar.xz
 cd      libtool-2.4.6
 export SED=sed
-./configure --disable-dependency-tracking \
+./configure \
+  --disable-dependency-tracking \
   --prefix=${PREFIX} \
   --program-prefix=g \
   --enable-ltdl-install
@@ -122,8 +126,7 @@ cd      ncurses-6.1
   --with-gpm=no
 make install
 
-cd $BUILD_DIR
-cd procps
+cd $BUILD_DIR/procps
 autoreconf -fiv
 ./configure \
   --disable-dependency-tracking \
