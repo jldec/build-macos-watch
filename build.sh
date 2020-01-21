@@ -37,7 +37,7 @@ curl -LO https://ftpmirror.gnu.org/gettext/gettext-0.20.1.tar.xz
 curl -LO https://ftpmirror.gnu.org/libtool/libtool-2.4.6.tar.xz
 curl -LO https://dl.bintray.com/homebrew/mirror/pkg-config-0.29.2.tar.gz
 curl -LO https://ftpmirror.gnu.org/ncurses/ncurses-6.1.tar.gz
-git clone https://gitlab.com/procps-ng/procps.git && git checkout v3.3.16
+git clone https://gitlab.com/procps-ng/procps.git
 
 # versions below must match the versions curled/cloned above.
 # build steps are copied from the install function in each .brew file
@@ -127,6 +127,8 @@ cd      ncurses-6.1
 make install
 
 cd $BUILD_DIR/procps
+git checkout v3.3.16
+git clean -fxd
 autoreconf -fiv
 ./configure \
   --disable-dependency-tracking \
