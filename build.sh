@@ -1,8 +1,10 @@
 # NOTE: this cannot be run in one step - start with just the curl and jq steps below
+#
 # improvements todo:
 # - just extract **/.brew/*.rb for each bottle
 # - pull mirror or git url from bottle
 # - use non-versioned directories for extracted source (see .gitignore)
+# - try to figure out why watch `-d` does not work as expected (see ncurses below)
 
 export PREFIX=~/local
 echo "PREFIX = $PREFIX"
@@ -111,6 +113,7 @@ make check
 make install
 
 # did not implement make_libncurses_symlinks from ncurses/ncurses/6.1/.brew/ncurses.rb
+# this is probably why watch `-d` does not work as expected
 cd $BUILD_DIR
 rm -fr  ncurses-6.1
 tar xzf ncurses-6.1.tar.gz

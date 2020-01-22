@@ -6,5 +6,6 @@ After unsuccessfully futzing to guess autoconf settings, I eventually got this w
 - All the steps are in [build.sh](build.sh)
 - Binaries are installed in ~/local/bin, ~/local/lib etc.
 - The resulting `watch` binary depends on an ncurses dynlib under my home directory, making it not very portable.
+- watch `-d` does not work as expected - probably because termcaps for ncurses are not properly symlinked.
 
 Credit: Thanks to [homebrew](https://github.com/Homebrew/brew/graphs/contributors) and other OSS community contributors!
